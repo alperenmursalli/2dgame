@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ant Colony Command</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Strategic Colony Defense</p>
+        <h1>Ant Colony Command</h1>
+      </div>
+      <div class="topbar-status" id="gameStateLabel">Brood chamber ready</div>
+    </header>
+
+    <main class="app-shell">
+      <section class="game-column">
+        <div class="canvas-frame">
+          <canvas id="gameCanvas" width="1280" height="720"></canvas>
+          <div class="floating-message" id="overlayMessage"></div>
+
+          <section class="panel action-panel action-panel-overlay">
+            <div class="panel-heading">
+              <div>
+                <p class="mini-label">Brood Chamber</p>
+                <h3>Spawn Ants</h3>
+              </div>
+            </div>
+
+            <div class="spawn-card">
+              <button id="spawnWorkerButton">Spawn Worker <span>[Space]</span></button>
+              <div class="spawn-meta">
+                <span>Cost: 10 food</span>
+                <span id="workerCooldownLabel">Ready</span>
+              </div>
+              <div class="cooldown-track"><div class="cooldown-fill" id="workerCooldownFill"></div></div>
+            </div>
+
+            <div class="spawn-card">
+              <button id="spawnSoldierButton">Spawn Soldier <span>[E]</span></button>
+              <div class="spawn-meta">
+                <span>Cost: 18 food</span>
+                <span id="soldierCooldownLabel">Ready</span>
+              </div>
+              <div class="cooldown-track"><div class="cooldown-fill" id="soldierCooldownFill"></div></div>
+            </div>
+
+            <p class="hint" id="selectionStatus">Click the nest to refocus on the queen and brood chamber.</p>
+          </section>
+
+          <div class="screen-overlay visible" id="screenOverlay">
+            <div class="screen-card">
+              <p class="screen-kicker" id="screenKicker">Queen's Orders</p>
+              <h2 id="screenTitle">Defend the colony through day and night</h2>
+              <p id="screenDescription">
+                Expand the brood, guard the queen, and survive increasingly dangerous enemy assaults.
+              </p>
+              <div class="screen-actions">
+                <button id="primaryScreenButton">Start Colony</button>
+                <button class="ghost-button" id="secondaryScreenButton">How to Play</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar-column sidebar">
+        <section class="panel stats-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="mini-label">Colony Feed</p>
+              <h3>Strategic Overview</h3>
+            </div>
+            <div class="wave-chip" id="waveBadge">Wave 0</div>
+          </div>
+          <div class="stat-grid">
+            <div><span>Food</span><strong id="foodCount">0</strong></div>
+            <div><span>Workers</span><strong id="workerCount">0</strong></div>
+            <div><span>Soldiers</span><strong id="soldierCount">0</strong></div>
+            <div><span>Enemies</span><strong id="enemyCount">0</strong></div>
+            <div><span>Nest Health</span><strong id="nestHealth">0</strong></div>
+            <div><span>Queen Health</span><strong id="queenHealth">0</strong></div>
+            <div><span>Phase</span><strong id="phaseLabel">Day</strong></div>
+            <div><span>Cycle Timer</span><strong id="phaseTimer">0s</strong></div>
+            <div><span>Next Wave</span><strong id="waveTimer">0s</strong></div>
+            <div><span>Survival</span><strong id="survivalTime">0s</strong></div>
+            <div><span>Goal</span><strong id="goalText">0</strong></div>
+            <div><span>Queen Aura</span><strong id="queenAura">Calm</strong></div>
+          </div>
+        </section>
+
+        <section class="panel help-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="mini-label">Field Notes</p>
+              <h3>Controls and Loop</h3>
+            </div>
+          </div>
+          <ul>
+            <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow keys move the camera.</li>
+            <li>Workers harvest food and reinforce strong pheromone routes.</li>
+            <li>Soldiers patrol the nest and rush threats near the queen.</li>
+            <li>Enemies become more aggressive at night and in later waves.</li>
+            <li>Protect the queen and survive until the victory goal is reached.</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
