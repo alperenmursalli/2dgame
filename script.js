@@ -1,9 +1,9 @@
 "use strict";
 
-const WORKER_COST = 10;
-const SOLDIER_COST = 18;
-const WORKER_COOLDOWN = 3.5;
-const SOLDIER_COOLDOWN = 6.5;
+const WORKER_COST = 12;
+const SOLDIER_COST = 22;
+const WORKER_COOLDOWN = 4.25;
+const SOLDIER_COOLDOWN = 8;
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
@@ -542,7 +542,7 @@ class Enemy extends Entity {
 
     const target = this.chooseTarget();
     const isStructure = target === this.game.nest || target === this.game.queen;
-    const speedBoost = this.game.isNight ? 12 : 0;
+    const speedBoost = this.game.isNight ? 18 : 0;
     this.steerToward(target.x, target.y, this.speed + speedBoost, dt);
     this.applySeparation(this.game.enemies, 22, 28, dt);
     this.avoidObstacles(this.game.obstacles, 20, 88, dt);
@@ -684,8 +684,8 @@ class Game {
     this.lastTime = performance.now();
 
     this.world = { width: 2800, height: 1900 };
-    this.goalFood = 300;
-    this.survivalGoal = 300;
+    this.goalFood = 340;
+    this.survivalGoal = 330;
     this.cycleDuration = 60;
     this.enemyArchetypes = [
       {
@@ -760,10 +760,10 @@ class Game {
       speed: 380
     };
 
-    this.food = 60;
+    this.food = 46;
     this.gameTime = 0;
     this.wave = 0;
-    this.waveCooldown = 10;
+    this.waveCooldown = 8;
     this.activeWave = null;
     this.phaseTime = 0;
     this.isNight = false;
@@ -790,12 +790,12 @@ class Game {
     };
 
     this.initPheromones();
-    this.createObstacles(14);
-    this.createFoodSources(26);
-    for (let i = 0; i < 5; i += 1) {
+    this.createObstacles(15);
+    this.createFoodSources(20);
+    for (let i = 0; i < 4; i += 1) {
       this.spawnAnt("worker", true, false);
     }
-    for (let i = 0; i < 2; i += 1) {
+    for (let i = 0; i < 1; i += 1) {
       this.spawnAnt("soldier", true, false);
     }
     this.rebuildFoodScent();
@@ -904,7 +904,7 @@ class Game {
       if (!this.validSpawnLocation(x, y, 60)) {
         continue;
       }
-      this.foodSources.push(new FoodSource(x, y, rand(35, 72)));
+      this.foodSources.push(new FoodSource(x, y, rand(28, 58)));
       count -= 1;
     }
   }
@@ -931,7 +931,7 @@ class Game {
     this.showScreen(
       "start",
       "Guide the queen through the full survival cycle",
-      "Food fuels brood growth, nights intensify attacks, and enemy types change the pressure on your defenses. Reach 300 food or survive 300 seconds.",
+      "Food fuels brood growth, nights intensify attacks, and enemy types change the pressure on your defenses. Reach 340 food or survive 330 seconds.",
       "Start Colony",
       "How to Play"
     );
@@ -1105,13 +1105,13 @@ class Game {
 
   startNextWave() {
     this.wave += 1;
-    const nightBonus = this.isNight ? 2 : 0;
-    const count = 4 + Math.floor(this.wave * 1.8) + nightBonus;
-    const burstSize = Math.min(5, 1 + Math.floor(this.wave / 2) + nightBonus);
-    const interval = clamp(1.5 - this.wave * 0.06 - nightBonus * 0.08, 0.48, 1.5);
+    const nightBonus = this.isNight ? 3 : 0;
+    const count = 5 + Math.floor(this.wave * 2.2) + nightBonus;
+    const burstSize = Math.min(6, 2 + Math.floor(this.wave / 2) + nightBonus);
+    const interval = clamp(1.3 - this.wave * 0.07 - nightBonus * 0.08, 0.4, 1.3);
     this.activeWave = { remaining: count, interval, spawnTimer: 0.2, burstSize };
-    this.waveCooldown = clamp(18 - this.wave * 0.35, 8, 18);
-    this.createFoodSources(2 + Math.floor(this.wave * 0.4));
+    this.waveCooldown = clamp(15 - this.wave * 0.32, 6.5, 15);
+    this.createFoodSources(1 + Math.floor(this.wave * 0.25));
     this.rebuildFoodScent();
     this.sound.play("wave");
     this.addMessage(`Wave ${this.wave} incoming${this.isNight ? " under cover of night" : ""}.`);
@@ -1300,8 +1300,8 @@ class Game {
     }
     this.effects = this.effects.filter((effect) => effect.life > 0);
 
-    if (this.foodSources.length < 12) {
-      this.createFoodSources(4);
+    if (this.foodSources.length < 10) {
+      this.createFoodSources(3);
       this.rebuildFoodScent();
     }
 
